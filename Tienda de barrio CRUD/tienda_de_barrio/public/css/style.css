@@ -1,0 +1,284 @@
+/* ===== ESTILO GENERAL ===== */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(180deg, #fbeec1, #f5deb3);
+}
+
+/* ===== LOGIN ===== */
+body.login-body {
+  background: url("../img/tienda.jpg") no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+/* Capa oscura para resaltar el formulario */
+body.login-body::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 0;
+}
+
+.login-container {
+  position: relative;
+  z-index: 1;
+  background: rgba(255, 247, 225, 0.95);
+  border: 3px solid #d4a017;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 40px;
+  width: 350px;
+  text-align: center;
+  margin: 100px auto;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.login-container h2 {
+  margin-bottom: 10px;
+  color: #2e2e2e;
+  font-size: 1.8em;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 2px solid #d4a017;
+  border-radius: 10px;
+  font-size: 1em;
+}
+
+.login-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #ffb300;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-container button:hover {
+  background-color: #e39b00;
+  transform: scale(1.05);
+}
+
+/* ===== ANIMACIÓN ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== PANEL ADMIN ===== */
+.dashboard-body {
+  background: linear-gradient(180deg, #fff3d1, #ffe5a3);
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-header {
+  background-color: #755429;
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: 25px 0;
+  font-size: 1.5em;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* ===== BOTONES DASHBOARD ===== */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  margin-top: 50px;
+}
+
+.dashboard-btn {
+  background: linear-gradient(135deg, #ffcc33, #ff9933);
+  border: none;
+  color: #fff;
+  padding: 18px 40px;
+  border-radius: 15px;
+  font-size: 1.3em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  width: 280px;
+}
+
+.dashboard-btn:hover {
+  transform: scale(1.08);
+  background: linear-gradient(135deg, #ff9933, #ffcc33);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.3);
+}
+
+.logout {
+  background: linear-gradient(135deg, #b92d00, #ff4c29);
+}
+
+.logout:hover {
+  background: linear-gradient(135deg, #ff4c29, #b92d00);
+  transform: scale(1.1);
+}
+
+/* ===== PRODUCTOS / TIPOS ===== */
+body.bg-tienda {
+  background: linear-gradient(180deg, #fff9e6, #ffeab8);
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  color: #222;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🏪 Encabezado */
+.header {
+  width: 100%;
+  text-align: center;
+  background: rgba(255, 244, 200, 0.95);
+  padding: 25px 0;
+  border-bottom: 3px solid #e2b600;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.header h1 {
+  color: #3b2d00;
+  text-shadow: 1px 1px #ffeb7a;
+  margin: 0;
+  font-size: 2em;
+}
+
+/* 🔙 Botón Volver debajo del título */
+.header .btn-volver {
+  margin-top: 10px;
+  background: #f94d00;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  font-weight: bold;
+}
+
+.header .btn-volver:hover {
+  background: #ff6f2f;
+  transform: scale(1.05);
+}
+
+/* 📦 Contenedor principal */
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0px 6px 15px rgba(0,0,0,0.2);
+}
+
+h2 {
+  color: #b86b00;
+  border-bottom: 2px dashed #e2b600;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* 🧾 Formularios */
+form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+form input, form select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+}
+
+.btn-guardar {
+  background: #ffb800;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  font-weight: bold;
+}
+
+.btn-guardar:hover {
+  background: #ffd34d;
+  transform: scale(1.05);
+}
+
+/* 📋 Tablas */
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th, .tabla td {
+  border-bottom: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.tabla th {
+  background-color: #fff5c4;
+}
+
+.tabla tr:hover {
+  background: #fff8e1;
+  transition: 0.3s;
+}
+
+/* ===== BOTONES DE ACCIÓN (editar / eliminar) ===== */
+.btn-editar,
+.btn-eliminar {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.btn-editar {
+  background-color: #007bff;
+}
+
+.btn-eliminar {
+  background-color: #dc3545;
+}
+
+.btn-editar:hover {
+  transform: scale(1.1);
+  background-color: #0056b3;
+}
+
+.btn-eliminar:hover {
+  transform: scale(1.1);
+  background-color: #b02a37;
+}
