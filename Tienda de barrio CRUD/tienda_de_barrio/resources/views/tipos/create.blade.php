@@ -84,7 +84,7 @@
             <button type="submit">Guardar Nuevo TP Mily</button>
         </form>
 
-        <a href="{{ route('tipos.create') }}">← Volver a la lista de TP Mily</a>
+        <a href="{{ route('tipos.index') }}">← Volver a la lista de TP Mily</a>
     </div>
 </body>
 </html>
