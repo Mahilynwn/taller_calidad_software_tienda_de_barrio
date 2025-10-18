@@ -7,10 +7,12 @@ use App\Models\Tipo;
 
 class TipoController extends Controller
 {
+    // ✅ Constante para evitar duplicación de mensajes
+    private const MSG_TIPO_NO_ENCONTRADO = 'Tipo no encontrado.';
+
     // Mostrar todos los tipos de productos
     public function index()
     {
-        // Obtener todos los tipos desde la base de datos
         $tipos = Tipo::all();
         return view('tipos.index', compact('tipos'));
     }
@@ -29,7 +31,6 @@ class TipoController extends Controller
             'descripcion' => 'nullable|string|max:255',
         ]);
 
-        // Crear el nuevo tipo
         Tipo::create([
             'nombre_tipo' => $request->nombre,
             'descripcion' => $request->descripcion,
@@ -44,7 +45,7 @@ class TipoController extends Controller
         $tipo = Tipo::find($id);
 
         if (!$tipo) {
-            return redirect()->route('tipos')->with('error', 'Tipo no encontrado.');
+            return redirect()->route('tipos.index')->with('error', self::MSG_TIPO_NO_ENCONTRADO);
         }
 
         return view('tipos.edit', compact('tipo'));
@@ -61,12 +62,12 @@ class TipoController extends Controller
         $tipo = Tipo::find($id);
 
         if (!$tipo) {
-            return redirect()->route('tipos')->with('error', 'Tipo no encontrado.');
+            return redirect()->route('tipos.index')->with('error', self::MSG_TIPO_NO_ENCONTRADO);
         }
 
         $tipo->update([
             'nombre_tipo' => $request->nombre,
-            'descripcion' => $request->descripcion,
+            'descripcion'  => $request->descripcion,
         ]);
 
         return redirect()->route('tipos.index')->with('success', 'Tipo actualizado correctamente.');
@@ -78,7 +79,7 @@ class TipoController extends Controller
         $tipo = Tipo::find($id);
 
         if (!$tipo) {
-            return redirect()->route('tipos.index')->with('error', 'Tipo no encontrado.');
+            return redirect()->route('tipos.index')->with('error', self::MSG_TIPO_NO_ENCONTRADO);
         }
 
         $tipo->delete();
