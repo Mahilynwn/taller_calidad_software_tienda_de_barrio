@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Tipo;
-use Illuminate\Support\Facades\DB;
-
 
 class ProductoController extends Controller
 {
@@ -42,7 +40,7 @@ class ProductoController extends Controller
 
     // ✏️ Mostrar formulario de edición de un producto
     public function edit($id)
-    { 
+    {
         $producto = Producto::findOrFail($id);
         $tipos = \DB::table('tipos_productos')->get(); // ✅ cambio aquí
         return view('productos.edit', compact('producto', 'tipos'));
