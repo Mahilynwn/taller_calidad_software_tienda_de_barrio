@@ -8,28 +8,54 @@ use App\Models\Tipo;
 
 class ProductoController extends Controller
 {
-    // 📋 Mostrar todos los productos junto con su tipo
-    public function index()
+    // 📋 Mostrar todos los productos con filtros opcionales
+    public function index(Request $request)
     {
-        // Eager Loading del tipo para evitar consultas repetidas
-        $productos = Producto::with('tipo')->get();
-        return view('productos.index', compact('productos'));
+        $query = Producto::with('tipo');
+
+        // 🔍 Filtros opcionales
+        if ($request->filled('nombre')) {
+            $query->where('nombre_producto', 'LIKE', '%' . $request->nombre . '%');
+        }
+
+        if ($request->filled('id_tipo')) {
+            $query->where('id_tipo', $request->id_tipo);
+        }
+
+        if ($request->filled('precio_min')) {
+            $query->where('precio', '>=', $request->precio_min);
+        }
+
+        if ($request->filled('precio_max')) {
+            $query->where('precio', '<=', $request->precio_max);
+        }
+
+        $productos = $query->get();
+        $tipos = \DB::table('tipos_productos')->get();
+
+        // ⚠️ Si no hay resultados, enviamos una variable de advertencia
+        $mensaje = null;
+        if ($productos->isEmpty()) {
+            $mensaje = 'No hay productos por mostrar.';
+        }
+
+        return view('productos.index', compact('productos', 'tipos', 'mensaje'));
     }
 
-    // 🆕 Mostrar formulario para crear un producto
+    // 🆕 Crear producto
     public function create()
     {
-        $tipos = \DB::table('tipos_productos')->get(); // ✅ usar la tabla correcta
+        $tipos = \DB::table('tipos_productos')->get();
         return view('productos.create', compact('tipos'));
     }
 
-    // 💾 Guardar un nuevo producto en la BD
+    // 💾 Guardar producto
     public function store(Request $request)
     {
         $validated = $request->validate([
             'nombre_producto' => 'required|string|max:255',
             'precio' => 'required|numeric',
-            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo', // ✅ cambio aquí
+            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo',
             'stock' => 'nullable|integer',
         ]);
 
@@ -38,11 +64,11 @@ class ProductoController extends Controller
         return redirect()->route('productos.index')->with('success', 'Producto registrado correctamente.');
     }
 
-    // ✏️ Mostrar formulario de edición de un producto
+    // ✏️ Editar producto
     public function edit($id)
     {
         $producto = Producto::findOrFail($id);
-        $tipos = \DB::table('tipos_productos')->get(); // ✅ cambio aquí
+        $tipos = \DB::table('tipos_productos')->get();
         return view('productos.edit', compact('producto', 'tipos'));
     }
 
@@ -53,7 +79,7 @@ class ProductoController extends Controller
             'nombre_producto' => 'required|string|max:255',
             'precio' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo', // ✅ cambio aquí
+            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo',
         ]);
 
         $producto = Producto::findOrFail($id);
@@ -67,7 +93,7 @@ class ProductoController extends Controller
         return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
     }
 
-    // 🗑️ Eliminar un producto
+    // 🗑️ Eliminar producto
     public function destroy($id)
     {
         $producto = Producto::findOrFail($id);

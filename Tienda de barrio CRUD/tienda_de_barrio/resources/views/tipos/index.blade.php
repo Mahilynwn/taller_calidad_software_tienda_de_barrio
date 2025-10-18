@@ -143,6 +143,33 @@
         .center { text-align:center; }
         .muted { color:#666; font-size:0.95rem; }
         .empty { padding:40px; text-align:center; color:#7a7a7a; font-weight:600; }
+
+        /* --- FILTROS --- */
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .filter-form input {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            min-width: 140px;
+        }
+        .filter-form button {
+            background-color: #6b3e1e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .filter-form button:hover { background-color: #8b5a2b; }
     </style>
 </head>
 <body>
@@ -164,21 +191,24 @@
             <a href="{{ route('tipos.create') }}" class="btn btn-crear">➕ Crear nuevo tipo</a>
         </div>
 
-        {{-- Mensaje de éxito --}}
+        <form method="GET" action="{{ route('tipos.index') }}" class="filter-form">
+            <input type="text" name="nombre" placeholder="Nombre del tipo" value="{{ request('nombre') }}">
+            <input type="text" name="descripcion" placeholder="Descripción" value="{{ request('descripcion') }}">
+            <button type="submit">Filtrar</button>
+        </form>
+
         @if(session('success'))
             <div style="margin-top:12px; padding:10px; background:#d4f4dd; border-radius:8px;">
                 {{ session('success') }}
             </div>
         @endif
 
-        {{-- Mensaje de error --}}
         @if(session('error'))
             <div style="margin-top:12px; padding:10px; background:#f8d7da; border-radius:8px;">
                 {{ session('error') }}
             </div>
         @endif
 
-        {{-- Validación de datos --}}
         @if($tipos->isEmpty())
             <div class="empty">No hay tipos de producto para mostrar.</div>
         @else

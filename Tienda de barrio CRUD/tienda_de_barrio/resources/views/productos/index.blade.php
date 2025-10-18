@@ -11,7 +11,6 @@
             margin: 0;
             padding: 0;
         }
-
         header {
             background-color: #6b3e1e;
             color: white;
@@ -20,12 +19,7 @@
             font-size: 24px;
             font-weight: bold;
         }
-
-        .container {
-            display: flex;
-            min-height: 90vh;
-        }
-
+        .container { display: flex; min-height: 90vh; }
         .sidebar {
             width: 220px;
             background-color: #b37a39;
@@ -36,19 +30,12 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .menu-links {
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-
-        .sidebar h3 {
-            margin-bottom: 30px;
-            font-size: 18px;
-            letter-spacing: 1px;
-        }
-
+        .sidebar h3 { margin-bottom: 30px; font-size: 18px; letter-spacing: 1px; }
         .sidebar a {
             display: block;
             text-decoration: none;
@@ -61,16 +48,8 @@
             font-weight: bold;
             transition: background 0.3s ease, transform 0.2s ease;
         }
-
-        .sidebar a:not(.btn-logout) {
-            background-color: #f4b942;
-        }
-
-        .sidebar a:not(.btn-logout):hover {
-            background-color: #ffce5c;
-            transform: scale(1.05);
-        }
-
+        .sidebar a:not(.btn-logout) { background-color: #f4b942; }
+        .sidebar a:not(.btn-logout):hover { background-color: #ffce5c; transform: scale(1.05); }
         .btn-logout {
             background-color: #e63946;
             color: white;
@@ -83,12 +62,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             transition: background 0.3s ease, transform 0.2s ease;
         }
-
-        .btn-logout:hover {
-            background-color: #ff4d5a;
-            transform: scale(1.08);
-        }
-
+        .btn-logout:hover { background-color: #ff4d5a; transform: scale(1.08); }
         .main-content {
             flex: 1;
             padding: 40px;
@@ -98,7 +72,6 @@
             margin: 20px;
             box-shadow: 0 0 10px rgba(0,0,0,0.15);
         }
-
         .topbar {
             display: flex;
             justify-content: space-between;
@@ -106,7 +79,6 @@
             gap: 10px;
             flex-wrap: wrap;
         }
-
         .btn {
             padding: 8px 14px;
             border-radius: 10px;
@@ -115,11 +87,9 @@
             color: white;
             display: inline-block;
         }
-
         .btn-crear { background:#ff7675; }
         .btn-editar { background:#3498db; padding:6px 10px; border-radius:8px; }
         .btn-eliminar { background:#e74c3c; padding:6px 10px; border-radius:8px; border:none; color:#fff; }
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -128,27 +98,50 @@
             border-radius: 10px;
             overflow: hidden;
         }
-
-        thead th {
-            background:#f9e79f;
-            padding:12px;
-            text-align:left;
-        }
-
-        tbody td {
-            padding:12px;
-            border-bottom:1px solid #f1c40f;
-        }
-
+        thead th { background:#f9e79f; padding:12px; text-align:left; }
+        tbody td { padding:12px; border-bottom:1px solid #f1c40f; }
         .center { text-align:center; }
         .right { text-align:right; }
         .muted { color:#666; font-size:0.95rem; }
-
         .empty {
             padding: 40px;
             text-align:center;
             color:#7a7a7a;
             font-weight:600;
+        }
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .filter-form input, .filter-form select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            min-width: 140px;
+        }
+        .filter-form button {
+            background-color: #6b3e1e;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .filter-form button:hover { background-color: #8b5a2b; }
+        .alert {
+            margin-top: 12px;
+            padding: 10px;
+            background: #ffeeba;
+            border-radius: 8px;
+            text-align: center;
+            color: #856404;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -171,13 +164,30 @@
             <a href="{{ route('productos.create') }}" class="btn btn-crear">➕ Crear nuevo producto</a>
         </div>
 
+        <form method="GET" action="{{ route('productos.index') }}" class="filter-form">
+            <input type="text" name="nombre" placeholder="Nombre" value="{{ request('nombre') }}">
+            <input type="number" name="precio_min" placeholder="Precio mínimo" value="{{ request('precio_min') }}">
+            <input type="number" name="precio_max" placeholder="Precio máximo" value="{{ request('precio_max') }}">
+            <select name="id_tipo">
+                <option value="">Tipo de producto</option>
+                @foreach($tipos as $tipo)
+                    <option value="{{ $tipo->id_tipo }}" {{ request('id_tipo') == $tipo->id_tipo ? 'selected' : '' }}>
+                        {{ $tipo->nombre_tipo }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit">Filtrar</button>
+        </form>
+
         @if(session('success'))
             <div style="margin-top:12px; padding:10px; background:#d4f4dd; border-radius:8px;">
                 {{ session('success') }}
             </div>
         @endif
 
-        @if($productos->isEmpty())
+        @if(isset($mensaje))
+            <div class="alert">{{ $mensaje }}</div>
+        @elseif($productos->isEmpty())
             <div class="empty">No hay productos para mostrar.</div>
         @else
             <table>

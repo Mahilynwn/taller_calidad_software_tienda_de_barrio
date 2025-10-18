@@ -7,23 +7,42 @@ use App\Models\Tipo;
 
 class TipoController extends Controller
 {
-    // ✅ Constante para evitar duplicación de mensajes
     private const MSG_TIPO_NO_ENCONTRADO = 'Tipo no encontrado.';
 
-    // Mostrar todos los tipos de productos
-    public function index()
+    /**
+     * 🧭 Mostrar listado con filtros multicriterio
+     */
+    public function index(Request $request)
     {
-        $tipos = Tipo::all();
+        $query = Tipo::query();
+
+        // 🔍 FILTRO POR NOMBRE
+        if ($request->filled('nombre')) {
+            $query->where('nombre_tipo', 'LIKE', '%' . $request->nombre . '%');
+        }
+
+        // 🔍 FILTRO POR DESCRIPCIÓN
+        if ($request->filled('descripcion')) {
+            $query->where('descripcion', 'LIKE', '%' . $request->descripcion . '%');
+        }
+
+        // Obtener los tipos después de aplicar los filtros
+        $tipos = $query->get();
+
         return view('tipos.index', compact('tipos'));
     }
 
-    // Formulario de creación
+    /**
+     * ➕ Formulario de creación
+     */
     public function create()
     {
         return view('tipos.create');
     }
 
-    // Guardar nuevo tipo en la base de datos
+    /**
+     * 💾 Guardar nuevo tipo
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -39,7 +58,9 @@ class TipoController extends Controller
         return redirect()->route('tipos.index')->with('success', 'Tipo creado correctamente.');
     }
 
-    // Formulario de edición
+    /**
+     * ✏️ Formulario de edición
+     */
     public function edit($id)
     {
         $tipo = Tipo::find($id);
@@ -51,7 +72,9 @@ class TipoController extends Controller
         return view('tipos.edit', compact('tipo'));
     }
 
-    // Actualizar tipo
+    /**
+     * 🔁 Actualizar tipo
+     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -73,7 +96,9 @@ class TipoController extends Controller
         return redirect()->route('tipos.index')->with('success', 'Tipo actualizado correctamente.');
     }
 
-    // Eliminar tipo
+    /**
+     * 🗑️ Eliminar tipo
+     */
     public function destroy($id)
     {
         $tipo = Tipo::find($id);

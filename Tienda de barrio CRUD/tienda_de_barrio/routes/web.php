@@ -59,3 +59,5 @@ Route::put('/tipos/{id}', [TipoController::class, 'update'])->name('tipos.update
 
 // Eliminar tipo
 Route::delete('/tipos/{id}', [TipoController::class, 'destroy'])->name('tipos.destroy');
+Route::get('tipos/reporte/pdf', [TipoController::class, 'generarPDF'])->name('tipos.reporte.pdf');
+Route::get('tipos/reporte/excel', [TipoController::class, 'generarExcel'])->name('tipos.reporte.excel');
