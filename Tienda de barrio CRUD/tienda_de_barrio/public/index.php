@@ -29,6 +29,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 |
 */
 
+// NOSONAR: Laravel requiere este require_once para inicializar correctamente la aplicación.
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 
 /*
