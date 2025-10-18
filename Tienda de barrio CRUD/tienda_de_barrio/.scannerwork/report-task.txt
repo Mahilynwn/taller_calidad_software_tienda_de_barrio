@@ -1,0 +1,7 @@
+organization=mahilynwn
+projectKey=Mahilynwn_taller_calidad_software_tienda_de_barrio
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.68788
+dashboardUrl=https://sonarcloud.io/dashboard?id=Mahilynwn_taller_calidad_software_tienda_de_barrio
+ceTaskId=AZnwrEgwz9R1EyqnBLW4
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZnwrEgwz9R1EyqnBLW4

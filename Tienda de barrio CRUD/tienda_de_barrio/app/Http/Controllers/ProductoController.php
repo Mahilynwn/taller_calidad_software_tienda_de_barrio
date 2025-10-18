@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Tipo;
+use Illuminate\Support\Facades\DB;
+
 
 class ProductoController extends Controller
 {
@@ -19,55 +21,53 @@ class ProductoController extends Controller
     // 🆕 Mostrar formulario para crear un producto
     public function create()
     {
-        $tipos = Tipo::all(); // obtenemos los tipos desde la BD
+        $tipos = \DB::table('tipos_productos')->get(); // ✅ usar la tabla correcta
         return view('productos.create', compact('tipos'));
     }
 
     // 💾 Guardar un nuevo producto en la BD
     public function store(Request $request)
-{
-    // ✅ Validar los datos recibidos del formulario
-    $validated = $request->validate([
-        'nombre_producto' => 'required|string|max:255',
-        'precio' => 'required|numeric',
-        'id_tipo' => 'required|integer',
-        'stock' => 'nullable|integer',
-    ]);
+    {
+        $validated = $request->validate([
+            'nombre_producto' => 'required|string|max:255',
+            'precio' => 'required|numeric',
+            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo', // ✅ cambio aquí
+            'stock' => 'nullable|integer',
+        ]);
 
-    // ✅ Crear un nuevo producto con los datos validados
-    Producto::create($validated);
+        Producto::create($validated);
 
-    // ✅ Redirigir con mensaje de éxito
-    return redirect()->route('productos.index')->with('success', 'Producto registrado correctamente.');
-}
+        return redirect()->route('productos.index')->with('success', 'Producto registrado correctamente.');
+    }
 
     // ✏️ Mostrar formulario de edición de un producto
     public function edit($id)
     { 
         $producto = Producto::findOrFail($id);
-    $tipos = Tipo::all();
-    return view('productos.edit', compact('producto', 'tipos'));
+        $tipos = \DB::table('tipos_productos')->get(); // ✅ cambio aquí
+        return view('productos.edit', compact('producto', 'tipos'));
     }
 
+    // 💾 Actualizar producto
     public function update(Request $request, $id)
-{
-    $request->validate([
-        'nombre_producto' => 'required|string|max:255',
-        'precio' => 'required|numeric|min:0',
-        'stock' => 'required|integer|min:0',
-        'id_tipo' => 'required|integer|exists:tipos,id_tipo',
-    ]);
+    {
+        $request->validate([
+            'nombre_producto' => 'required|string|max:255',
+            'precio' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'id_tipo' => 'required|integer|exists:tipos_productos,id_tipo', // ✅ cambio aquí
+        ]);
 
-   $producto = Producto::findOrFail($id);
-    $producto->update([
-        'nombre_producto' => $request->nombre_producto,
-        'precio' => $request->precio,
-        'stock' => $request->stock,
-        'id_tipo' => $request->id_tipo,
-    ]);
+        $producto = Producto::findOrFail($id);
+        $producto->update([
+            'nombre_producto' => $request->nombre_producto,
+            'precio' => $request->precio,
+            'stock' => $request->stock,
+            'id_tipo' => $request->id_tipo,
+        ]);
 
-    return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
-}
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+    }
 
     // 🗑️ Eliminar un producto
     public function destroy($id)
@@ -75,6 +75,6 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id);
         $producto->delete();
 
-        return redirect()->route('productos')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
     }
 }

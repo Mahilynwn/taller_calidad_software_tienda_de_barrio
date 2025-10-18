@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
+    // ✅ Define constantes para las rutas de los archivos JSON
+    private const PRODUCTOS_PATH = 'app/public/productos.json';
+    private const TIPOS_PATH = 'app/public/tipos.json';
+
     // 🟢 DASHBOARD PRINCIPAL
     public function index()
     {
@@ -24,7 +28,7 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        $path = storage_path('app/public/productos.json');
+        $path = storage_path(self::PRODUCTOS_PATH);
         $productos = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
 
         return view('productos', ['productos' => $productos]);
@@ -37,7 +41,7 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        $tiposPath = storage_path('app/public/tipos.json');
+        $tiposPath = storage_path(self::TIPOS_PATH);
         $tipos = file_exists($tiposPath) ? json_decode(file_get_contents($tiposPath), true) : [];
 
         return view('crearProducto', ['tipos' => $tipos]);
@@ -46,7 +50,7 @@ class DashboardController extends Controller
     // 🟢 GUARDAR NUEVO PRODUCTO
     public function storeProducto(Request $request)
     {
-        $path = storage_path('app/public/productos.json');
+        $path = storage_path(self::PRODUCTOS_PATH);
         $productos = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
 
         $nuevo = [
@@ -66,11 +70,11 @@ class DashboardController extends Controller
     // 🟠 EDITAR PRODUCTO (VISTA)
     public function editProducto($id)
     {
-        $path = storage_path('app/public/productos.json');
+        $path = storage_path(self::PRODUCTOS_PATH);
         $productos = json_decode(file_get_contents($path), true);
         $producto = collect($productos)->firstWhere('id', $id);
 
-        $tiposPath = storage_path('app/public/tipos.json');
+        $tiposPath = storage_path(self::TIPOS_PATH);
         $tipos = file_exists($tiposPath) ? json_decode(file_get_contents($tiposPath), true) : [];
 
         return view('editarProducto', ['producto' => $producto, 'tipos' => $tipos]);
@@ -79,7 +83,7 @@ class DashboardController extends Controller
     // 🔵 ACTUALIZAR PRODUCTO
     public function updateProducto(Request $request, $id)
     {
-        $path = storage_path('app/public/productos.json');
+        $path = storage_path(self::PRODUCTOS_PATH);
         $productos = json_decode(file_get_contents($path), true);
 
         foreach ($productos as &$producto) {
@@ -99,7 +103,7 @@ class DashboardController extends Controller
     // 🔴 ELIMINAR PRODUCTO
     public function deleteProducto($id)
     {
-        $path = storage_path('app/public/productos.json');
+        $path = storage_path(self::PRODUCTOS_PATH);
         $productos = json_decode(file_get_contents($path), true);
 
         $productos = array_filter($productos, fn($p) => $p['id'] != $id);
@@ -115,7 +119,7 @@ class DashboardController extends Controller
             return redirect()->route('login');
         }
 
-        $path = storage_path('app/public/tipos.json');
+        $path = storage_path(self::TIPOS_PATH);
         $tipos = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
 
         return view('tipos', ['tipos' => $tipos]);
@@ -134,7 +138,7 @@ class DashboardController extends Controller
     // 🟢 GUARDAR NUEVO TIPO
     public function storeTipo(Request $request)
     {
-        $path = storage_path('app/public/tipos.json');
+        $path = storage_path(self::TIPOS_PATH);
         $tipos = file_exists($path) ? json_decode(file_get_contents($path), true) : [];
 
         $nuevo = [
@@ -152,7 +156,7 @@ class DashboardController extends Controller
     // 🟠 EDITAR TIPO (VISTA)
     public function editTipo($id)
     {
-        $path = storage_path('app/public/tipos.json');
+        $path = storage_path(self::TIPOS_PATH);
         $tipos = json_decode(file_get_contents($path), true);
         $tipo = collect($tipos)->firstWhere('id', $id);
 
@@ -162,7 +166,7 @@ class DashboardController extends Controller
     // 🔵 ACTUALIZAR TIPO
     public function updateTipo(Request $request, $id)
     {
-        $path = storage_path('app/public/tipos.json');
+        $path = storage_path(self::TIPOS_PATH);
         $tipos = json_decode(file_get_contents($path), true);
 
         foreach ($tipos as &$tipo) {
@@ -180,7 +184,7 @@ class DashboardController extends Controller
     // 🔴 ELIMINAR TIPO
     public function deleteTipo($id)
     {
-        $path = storage_path('app/public/tipos.json');
+        $path = storage_path(self::TIPOS_PATH);
         $tipos = json_decode(file_get_contents($path), true);
 
         $tipos = array_filter($tipos, fn($t) => $t['id'] != $id);
